@@ -10,10 +10,15 @@ st.markdown("""
     .main {
         background-color: #f8f9fa;
     }
+    /* Metric styling */
     [data-testid="stMetricValue"] {
         font-size: 28px;
         color: #2563eb;
         font-weight: 700;
+    }
+    [data-testid="stMetricLabel"] {
+        color: #2563eb !important;
+        font-weight: 600;
     }
     .stMetric {
         background-color: #ffffff;
@@ -22,10 +27,11 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         border: 1px solid #e2e8f0;
     }
-    /* Update text in the commentary box to blue */
-    .blue-commentary {
-        color: #2563eb;
-        font-weight: 600;
+    /* Blue Subheaders */
+    .blue-header {
+        color: #2563eb !important;
+        font-weight: 700;
+        margin-bottom: 15px;
     }
     div.stButton > button {
         width: 100%;
@@ -52,12 +58,9 @@ with input_col:
     utilities = st.number_input("Utilities (Power, Water, Internet, Phone)", value=450.0, step=25.0)
     healthcare = st.number_input("Healthcare (Premiums & Out-of-pocket)", value=600.0, step=50.0)
     lifestyle = st.number_input("Lifestyle & Personal (Gym, Pets, Hobbies)", value=400.0, step=50.0)
-    
-    # New Categories
     shopping = st.number_input("Shopping (Clothing, Electronics, Home Goods)", value=300.0, step=50.0)
     debt = st.number_input("Credit Debt (Monthly Payments)", value=200.0, step=50.0)
     vacation = st.number_input("Vacation/Travel (Annual Budget / 12)", value=400.0, step=50.0)
-    
     other = st.number_input("Other (Miscellaneous Catch-all)", value=250.0, step=25.0)
 
 # Calculations
@@ -66,7 +69,8 @@ annual_total = monthly_total * 12
 nest_egg = annual_total * 25
 
 with results_col:
-    st.subheader("Financial Overview")
+    # Applying the blue header style
+    st.markdown('<h3 class="blue-header">Financial Overview</h3>', unsafe_allow_html=True)
     
     # Metrics Row
     m_col1, m_col2 = st.columns(2)
@@ -81,8 +85,7 @@ with results_col:
         labels=labels, 
         values=values, 
         hole=.6,
-        # Expanded color palette for more categories
-        marker=dict(colors=['#1e40af', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#dbeafe', '#e2e8f0', '#cbd5e1', '#94a3b8']),
+        marker=dict(colors=['#1e3a8a', '#1e40af', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#dbeafe', '#eff6ff', '#f8fafc']),
         textinfo='percent',
         hoverinfo='label+value',
         showlegend=True
@@ -91,18 +94,23 @@ with results_col:
     fig.update_layout(
         margin=dict(t=30, b=0, l=0, r=0),
         height=450,
-        legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
-        annotations=[dict(text='Expense<br>Mix', x=0.5, y=0.5, font_size=20, showarrow=False)]
+        # Making the center text blue to match
+        annotations=[dict(text='Expense<br>Mix', x=0.5, y=0.5, font_size=20, showarrow=False, font_color="#2563eb")],
+        legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5, font=dict(color="#2563eb"))
     )
     
     st.plotly_chart(fig, use_container_width=True)
 
-    # Commentary with Blue Text
+    # Blue Commentary Box
     st.markdown(f"""
     <div style="background-color: #eff6ff; padding: 20px; border-radius: 10px; border-left: 5px solid #2563eb; margin-top: 20px;">
         <h4 style="margin-top:0; color: #2563eb;">💡 The 25x Strategy</h4>
-        <p style="color: #2563eb;">To sustain an annual spend of <span class="blue-commentary">${annual_total:,.0f}</span>, 
-        you need a total nest egg of <span class="blue-commentary">${nest_egg:,.0f}</span>.</p>
-        <p style="color: #2563eb; font-size: 0.9em;">This is based on the 4% Rule, which historically allows a portfolio to last 30+ years.</p>
+        <p style="color: #2563eb; font-weight: 500;">
+            To sustain an annual spend of <b>${annual_total:,.0f}</b>, 
+            you need a total nest egg of <b>${nest_egg:,.0f}</b>.
+        </p>
+        <p style="color: #2563eb; font-size: 0.9em; opacity: 0.9;">
+            This is based on the 4% Rule, which historically allows a portfolio to last 30+ years.
+        </p>
     </div>
     """, unsafe_allow_html=True)
