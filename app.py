@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.graph_objects as go
 
 # Page Configuration
-st.set_page_config(page_title="Wealth & Nest Egg Tracker", layout="wide")
+st.set_page_config(page_title="Expenses & Nest Egg Estimator", layout="wide")
 
 # Modern UI Styling
 st.markdown("""
@@ -32,7 +32,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.title("Wealth & Nest Egg Tracker")
+st.title("Expense & Nest Egg Estimator")
 st.write("Calculate your annual cash flow and projected financial independence target.")
 
 # Main Layout: Two columns
